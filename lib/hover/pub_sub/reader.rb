@@ -6,25 +6,21 @@ require 'json'
 module Hover
   module PubSub
     class Reader
-      def self.subscription_name(topic_name)
-        "#{topic_name}-subscription"
-      end
-
       def self.parse_message(message)
         json = message.data
         JSON.parse(json)
       end
 
-      def initialize(project_id:, topic_names:, ack_deadline:)
+      def initialize(project_id:, subscription_names:, ack_deadline:)
         @project_id = project_id
-        @topic_names = topic_names
+        @subscription_names = subscription_names
         @ack_deadline = ack_deadline
       end
 
       def read
-        for_each_new_message do |topic_name, message|
+        for_each_new_message do |subscription_name, message|
           parsed_message = self.class.parse_message(message)
-          processed_successfully = yield(topic_name, parsed_message).eql?(true)
+          processed_successfully = yield(subscription_name, parsed_message).eql?(true)
 
           delete message if processed_successfully
         end
@@ -33,10 +29,10 @@ module Hover
       private
 
       def for_each_new_message
-        threads = subscriptions.map do |topic_name, subscription|
+        threads = subscriptions.map do |subscription_name, subscription|
           Thread.new do
             subscription.pull(immediate: false).each do |message|
-              yield(topic_name, message)
+              yield(subscription_name, message)
             end
           end
         end
@@ -50,18 +46,10 @@ module Hover
       end
 
       def subscriptions
-        @topic_names.map.with_object({}) do |topic_name, hash|
-          project.topic(topic_name, skip_lookup: true)
-
-          hash[topic_name] = subscription(topic_name)
-        end
-      end
-
-      def subscription(topic_name)
-        name = self.class.subscription_name(topic_name)
-
-        project.subscription(name, skip_lookup: true).tap do |subscription|
-          subscription.deadline = @ack_deadline
+        @subscription_names.map.with_object({}) do |name, hash|
+          hash[name] = project.subscription(name, skip_lookup: true).tap do |subscription|
+            subscription.deadline = @ack_deadline
+          end
         end
       end
 

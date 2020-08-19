@@ -31,7 +31,7 @@ RSpec.describe Hover::PubSub::Reader, :use_pubsub_emulator do
     let(:instance) do
       described_class.new(
         project_id: @pubsub_project_id,
-        topic_names: [topic_name],
+        subscription_names: [subscription_name],
         ack_deadline: 1
       )
     end
@@ -55,8 +55,8 @@ RSpec.describe Hover::PubSub::Reader, :use_pubsub_emulator do
         expect(messages.size).to eq(1)
         expect(messages.first).to eq(sent_message)
 
-        instance.read do |topic_name, message|
-          raise "No messages expected got #{message.inspect} on topic #{topic_name}"
+        instance.read do |subscription_name, message|
+          raise "No messages expected got #{message.inspect} on subscriptions #{subscription_name}"
         end
       end
     end

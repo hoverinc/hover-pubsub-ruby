@@ -18,16 +18,14 @@ And then execute:
 
 ### Conventions
 
-- Subscription names follow the format `"#{topic_name}-subscription"`
 - Messages are hashes
-- Message hashes are encoded to JSON for transport and decoded back to hashes when reading
 
 ### Receiving Messages
 
 ```ruby
 reader = Hover::PubSub::Reader.new(
   project_id: ENV['GCP_PUBSUB_PROJECT_ID'],
-  topic_names: ['list', 'of', 'topic', 'names'],
+  subscription_names: ['list', 'of', 'subscription', 'names'],
   ack_deadline: 30
 )
 
@@ -38,12 +36,9 @@ end
 
 A `Reader` instance has a `#read` instance method that takes a block. The block is responsible for processing each message. If the block returns true, processing is considered successful and the message is acknowledged and deleted. If the block returns false the message goes back to the queue for another reader to attempt processing again. 
 
-When the `#read` method is called a thread is created for each topic subscription. And all subscriptions are read from concurrently. It is safe to have more than one reader reading at the same time. With that you can scale up the number of active readers as the number of messages needing to be processed grows.
+When the `#read` method is called a thread is created for each subscription. And all subscriptions are read from concurrently. It is safe to have more than one reader reading at the same time. With that you can scale up the number of active readers as the number of messages needing to be processed grows.
 
-`#read` does not yield the [received message](https://googleapis.dev/ruby/google-cloud-pubsub/latest/Google/Cloud/PubSub/ReceivedMessage.html) objects to your block. It assumes your messages are JSON strings and decodes them and returns the decoded object. 
-
-`Reader` assumes your subscription names follow the pattern `"#{topic_name}-subscription"`.
-
+`#read` does not yield the [received message](https://googleapis.dev/ruby/google-cloud-pubsub/latest/Google/Cloud/PubSub/ReceivedMessage.html) objects to your block. It assumes your messages are JSON strings and decodes them and returns the decoded object.
 
 ### Publishing Messages
 
