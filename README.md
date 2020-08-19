@@ -61,7 +61,7 @@ You can call `.publish` or instantiate an instance and call `#publish` for each 
 
 ## Development
 
-You must install [Google Cloud SDK](https://cloud.google.com/sdk/). The specs in this project expect to be able to start a google cloud pubsub emulator locally.
+You must install [Google Cloud SDK](https://cloud.google.com/sdk/) and the [pubsub emulator](https://cloud.google.com/pubsub/docs/emulator). The specs in this project expect to be able to start a google cloud pubsub emulator locally.
 
 After checking out the repo, run `bundle` to install dependencies. Then, run `bundle exec rspec` to run the tests. You can also run `bundle exec bin/console` for an interactive prompt that will allow you to experiment.
 
