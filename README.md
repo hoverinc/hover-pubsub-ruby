@@ -18,7 +18,7 @@ And then execute:
 
 ### Conventions
 
-- Subscription names follow the format `"#{topic_name}_subscription"`
+- Subscription names follow the format `"#{topic_name}-subscription"`
 - Messages are hashes
 - Message hashes are encoded to JSON for transport and decoded back to hashes when reading
 
