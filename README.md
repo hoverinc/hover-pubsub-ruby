@@ -38,7 +38,7 @@ end
 
 A `Reader` instance has a `#read` instance method that takes a block. The block is responsible for processing each message. If the block returns true, processing is considered successful and the message is acknowledged and deleted. If the block returns false the message goes back to the queue for another reader to attempt processing again. 
 
-When the `#read` method is called a thread is created for each topic subscription. And all subscriptions are read from concurrently. It is safe to have more than one reader reading at the same time. With that you scale up the number of active readers are the number of messages needing to be processed grows.
+When the `#read` method is called a thread is created for each topic subscription. And all subscriptions are read from concurrently. It is safe to have more than one reader reading at the same time. With that you can scale up the number of active readers as the number of messages needing to be processed grows.
 
 `#read` does not yield the [received message](https://googleapis.dev/ruby/google-cloud-pubsub/latest/Google/Cloud/PubSub/ReceivedMessage.html) objects to your block. It assumes your messages are JSON strings and decodes them and returns the decoded object. 
 
