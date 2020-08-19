@@ -1,6 +1,6 @@
 # Hover::Pubsub::Ruby
 
-This gem provides a simple wrapper around the [Google Cloud PubSub gem](https://github.com/googleapis/google-cloud-ruby/tree/master/google-cloud-pubsub). It assumes you want to send and receive hashes of data. Currently it sends messages in JSON format and parses incoming messages as JSON.
+This gem provides a simple wrapper around the [Google Cloud PubSub gem](https://github.com/googleapis/google-cloud-ruby/tree/master/google-cloud-pubsub).
 
 ## Installation
 
@@ -15,6 +15,12 @@ And then execute:
     $ bundle install
 
 ## Usage
+
+### Conventions
+
+- Subscription names follow the format `"#{topic_name}_subscription"`
+- Messages are hashes
+- Message hashes are encoded to JSON for transport and decoded back to hashes when reading
 
 ### Receiving Messages
 
