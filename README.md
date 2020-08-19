@@ -1,6 +1,6 @@
 # Hover::Pubsub::Ruby
 
-This gem provides a simple wrapper around the [Google Cloud PubSub gem](https://github.com/googleapis/google-cloud-ruby/tree/master/google-cloud-pubsub).
+This gem provides a simple wrapper around the [Google Cloud PubSub gem](https://github.com/googleapis/google-cloud-ruby/tree/master/google-cloud-pubsub). It assumes you want to send and receive hashes of data. Currently it sends messages in JSON format and parses incoming messages as JSON.
 
 ## Installation
 
@@ -16,7 +16,38 @@ And then execute:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Receiving Messages
+
+```ruby
+reader = Hover::PubSub::Reader.new(
+  project_id: ENV['GCP_PUBSUB_PROJECT_ID'],
+  topic_names: ['list', 'of', 'topic', 'names'],
+  ack_deadline: 30
+)
+
+reader.read |topic_name, message|
+  process(message)
+end
+```
+
+A `Reader` instance has a `#read` instance method that takes a block. The block is responsible for processing each message. If the block returns true, processing is considered successful and the message is acknowledged and deleted. If the block returns false the message goes back to the queue for another reader to attempt processing again. 
+When the `#read` method is called a thread is created for each topic. And all topics are read from concurrently. It is safe to have more than one reader reading at the same time. With that you scale up the number of active readers are the number of messages needing to be processed grows.
+`#read` does not yield the [received message](https://googleapis.dev/ruby/google-cloud-pubsub/latest/Google/Cloud/PubSub/ReceivedMessage.html) objects to your block. It assumes your messages are JSON strings and decodes them and returns the decoded object. 
+
+
+### Publishing Messages
+
+```ruby
+
+Hover::PubSub::Publisher.publish(
+  project_id: ENV['GCP_PUBSUB_PROJECT_ID'],
+  topic_name: 'topic-name',
+  message: {event: "sales_opportunity-state-changed", id: 123, state: 'sold'}
+)
+```
+
+You can call `.publish` or instantiate an instance and call `#publish` for each message. The sent [message](https://googleapis.dev/ruby/google-cloud-pubsub/latest/Google/Cloud/PubSub/Message.html) is returned. 
+
 
 ## Development
 
