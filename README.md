@@ -42,6 +42,8 @@ When the `#read` method is called a thread is created for each subscription. And
 
 ### Publishing Messages
 
+Class method
+
 ```ruby
 
 Hover::PubSub::Publisher.publish(
@@ -50,6 +52,29 @@ Hover::PubSub::Publisher.publish(
   message: {event: "sales_opportunity-state-changed", id: 123, state: 'sold'}
 )
 ```
+
+Instance method
+
+```ruby
+
+publisher = Hover::PubSub::Publisher.new(
+  project_id: ENV['GCP_PUBSUB_PROJECT_ID'],
+  topic_name: 'topic-name'
+)
+
+publisher.publish(
+  event: 'sales_opportunity-state-changed',
+  id: 123,
+  state: 'sold'
+)
+
+publisher.publish(
+  event: 'some-other-event',
+  metadata: value,
+  more_metadata: another_value
+)
+```
+
 
 You can call `.publish` or instantiate an instance and call `#publish` for each message. The sent [message](https://googleapis.dev/ruby/google-cloud-pubsub/latest/Google/Cloud/PubSub/Message.html) is returned. 
 
