@@ -69,7 +69,7 @@ publisher.publish(
 )
 
 publisher.publish(
-  event: 'some-other-event',
+  anything: 'you-want',
   metadata: value,
   more_metadata: another_value
 )
