@@ -29,7 +29,7 @@ reader = Hover::PubSub::Reader.new(
   ack_deadline: 30
 )
 
-reader.read do |topic_name, message|
+reader.read do |subscription_name, message|
   process(message)
 end
 ```
