@@ -16,7 +16,8 @@ def run_pubsub_emulator(&block)
       end
     end
 
-    host = `gcloud beta emulators pubsub env-init`.match(/^export PUBSUB_EMULATOR_HOST=(\S+)$/).captures.first
+    port = `gcloud beta emulators pubsub env-init`.match(/^export PUBSUB_EMULATOR_HOST=.*:(\S+)$/).captures.first
+    host = "localhost:#{port}"
 
     block.call host, project_id
   ensure
