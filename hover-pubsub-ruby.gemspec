@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary       = 'Wraps the Google Cloud PubSub gem'
   spec.homepage      = 'https://github.com/hoverinc/hover-pubsub-ruby'
   spec.license       = 'MIT'
-  spec.required_ruby_version = Gem::Requirement.new('>= 2.3.0')
+  spec.required_ruby_version = Gem::Requirement.new('>= 3.0.0')
 
   spec.metadata['allowed_push_host'] = 'https://github.com/hoverinc/hover-pubsub-ruby'
 
