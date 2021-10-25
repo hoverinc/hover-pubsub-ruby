@@ -16,11 +16,15 @@ module Hover
       end
 
       def publish(message)
-        raise "message must be hash: #{message.inspect}" unless message.is_a?(Hash)
-
-        payload = JSON.generate(message)
-
-        topic.publish(payload)
+        if message.is_a?(Hash)
+          payload = JSON.generate(message)
+          topic.publish(payload)
+        elsif message.class.include?(Google::Protobuf::MessageExts)
+          payload = message.class.encode(message)
+          topic.publish(payload)
+        else
+          raise "message must be hash or protobuf: #{message.inspect}"
+        end
       end
 
       private
