@@ -6,6 +6,7 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'google-cloud-pubsub'
+gem 'google-protobuf'
 
 group :test, :development do
   gem 'combustion'

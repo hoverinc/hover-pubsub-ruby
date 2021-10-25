@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    hover-pubsub-ruby (0.1.2)
+    hover-pubsub-ruby (0.1.3)
 
 GEM
   remote: https://rubygems.org/
@@ -275,6 +275,7 @@ PLATFORMS
 DEPENDENCIES
   combustion
   google-cloud-pubsub
+  google-protobuf
   hover-pubsub-ruby!
   rails
   rake
@@ -288,4 +289,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   2.2.16
+   2.2.25

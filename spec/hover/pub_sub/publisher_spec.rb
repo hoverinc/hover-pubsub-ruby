@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../dummy_pb.rb'
+
 RSpec.describe Hover::PubSub::Publisher, :use_pubsub_emulator do
   let(:topic_name) { 'webhook-send' }
   let(:message) do
@@ -19,13 +21,38 @@ RSpec.describe Hover::PubSub::Publisher, :use_pubsub_emulator do
       )
     end
 
-    it 'sends and returns message' do
-      expect(published_message).to be_a Google::Cloud::PubSub::Message
+    context 'message is a hash' do
+      it 'sends and returns message as JSON' do
+        expect(published_message).to be_a Google::Cloud::PubSub::Message
 
-      json = published_message.data
-      sent_message = JSON.parse(json)
+        json = published_message.data
+        sent_message = JSON.parse(json)
 
-      expect(sent_message).to eq(message)
+        expect(sent_message).to eq(message)
+      end
+    end
+
+    context 'message is a protobuf object' do
+      let(:message) do
+        Dummy.new(foo: 'bar')
+      end
+
+      it 'sends and returns message as protobuf object' do
+        expect(published_message).to be_a Google::Cloud::PubSub::Message
+
+        send_message = Dummy.decode(published_message.data)
+        expect(send_message).to eq(message)
+      end
+    end
+
+    context 'message is a string' do
+      let(:message) { 'foo ' }
+
+      it 'raises an exception' do
+        expect {
+          published_message
+        }.to raise_error(/message must be hash or protobuf/)
+      end
     end
   end
 
@@ -36,13 +63,38 @@ RSpec.describe Hover::PubSub::Publisher, :use_pubsub_emulator do
       described_class.new(project_id: @pubsub_project_id, topic_name: topic_name)
     end
 
-    it 'sends and returns message' do
-      expect(published_message).to be_a Google::Cloud::PubSub::Message
+    context 'message is a hash' do
+      it 'sends and returns message as JSON' do
+        expect(published_message).to be_a Google::Cloud::PubSub::Message
 
-      json = published_message.data
-      sent_message = JSON.parse(json)
+        json = published_message.data
+        sent_message = JSON.parse(json)
 
-      expect(sent_message).to eq(message)
+        expect(sent_message).to eq(message)
+      end
+    end
+
+    context 'message is a protobuf object' do
+      let(:message) do
+        Dummy.new(foo: 'bar')
+      end
+
+      it 'sends and returns message as protobuf object' do
+        expect(published_message).to be_a Google::Cloud::PubSub::Message
+
+        send_message = Dummy.decode(published_message.data)
+        expect(send_message).to eq(message)
+      end
+    end
+
+    context 'message is a string' do
+      let(:message) { 'foo ' }
+
+      it 'raises an exception' do
+        expect {
+          published_message
+        }.to raise_error(/message must be hash or protobuf/)
+      end
     end
   end
 end
