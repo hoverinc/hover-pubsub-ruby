@@ -131,6 +131,10 @@ GEM
       gapic-common (>= 0.7, < 2.a)
       google-cloud-errors (~> 1.0)
       grpc-google-iam-v1 (>= 0.6.10, < 2.a)
+    google-iam-v1 (0.6.0)
+      gapic-common (>= 0.20.0, < 2.a)
+      google-cloud-errors (~> 1.0)
+      grpc-google-iam-v1 (~> 1.1)
     google-protobuf (3.25.4)
     googleapis-common-protos (1.6.0)
       google-protobuf (>= 3.18, < 5.a)
@@ -245,6 +249,7 @@ GEM
     regexp_parser (2.9.2)
     reline (0.5.9)
       io-console (~> 0.5)
+    retriable (3.1.2)
     rexml (3.3.2)
       strscan
     rspec (3.13.0)
@@ -319,11 +324,13 @@ PLATFORMS
 DEPENDENCIES
   combustion
   google-cloud-pubsub
+  google-iam-v1
   google-protobuf
   grpc
   hover-pubsub-ruby!
   rails
   rake
+  retriable
   rspec
   rspec-rails
   rubocop
