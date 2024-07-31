@@ -7,7 +7,7 @@ gemspec
 
 gem 'google-cloud-pubsub'
 gem 'google-protobuf'
-gem 'grpc', '~> 1.64.0'
+gem 'grpc', '~> 1.65.0'
 
 group :test, :development do
   gem 'combustion'
