@@ -329,7 +329,6 @@ DEPENDENCIES
   combustion
   google-cloud-pubsub
   google-protobuf
-  grpc
   hover-pubsub-ruby!
   rails
   rake
