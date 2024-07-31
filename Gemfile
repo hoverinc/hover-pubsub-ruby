@@ -8,8 +8,6 @@ gemspec
 gem 'google-cloud-pubsub'
 gem 'google-protobuf'
 gem 'grpc'
-gem 'google-iam-v1'
-gem 'retriable'
 
 group :test, :development do
   gem 'combustion'
